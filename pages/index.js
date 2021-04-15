@@ -151,7 +151,11 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className={styles.footer}></footer>
+      <footer className={styles.footer}>
+        <a href="https://nomics.com" style={{ color: "white" }}>
+          Crypto Market Cap & Pricing Data Provided By Nomics.
+        </a>
+      </footer>
     </div>
   );
 }
