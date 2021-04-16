@@ -25,8 +25,30 @@
   align-items: center;
 }
 
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+
+.currency {
+  margin: 0 10px 0 0;
+  color: white;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
 .text {
   margin: 0;
+}
+
+.moon {
+  font-size: 32px;
+  margin: 0;
+  padding-top: 20px;
 }
 
 .footer a {
@@ -44,14 +66,48 @@
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
+.title span {
+  display: flex;
+}
+
 .title,
 .description {
   text-align: center;
 }
 
+.currencies {
+  display: flex;
+  width: 350px;
+  justify-content: space-between;
+  margin: 20px 0;
+  flex-direction: row;
+}
+
+.currencies div {
+  color: white;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+}
+
 .description {
   line-height: 1.5;
   font-size: 1.5rem;
+}
+
+.error {
+  color: white;
+  font-weight: 600;
+}
+
+.search {
+  width: 350px;
+  padding: 10px;
+  border-radius: 10px;
+  outline: white;
+  background-color: #ffffff20;
+  color: white;
+  border: none;
 }
 
 .grid {

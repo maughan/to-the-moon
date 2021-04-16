@@ -7,6 +7,14 @@ import FlipMove from "react-flip-move";
 export default function Home() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
+  const curriesList = [
+    { display: "USD", icon: "$" },
+    { display: "GBP", icon: "£" },
+    { display: "EUR", icon: "€" },
+    { display: "JPY", icon: "¥" },
+    { display: "NOK", icon: "nk " },
+  ];
+
   const [currency, setCurrency] = useState({ display: "NOK", icon: "nk " });
   const { data } = useSWR(generateURL(), fetcher, {
     refreshInterval: 1,
@@ -89,38 +97,27 @@ export default function Home() {
     window.localStorage.setItem("favorites", favorites.toString());
   }, [favorites]);
 
+  function refactorMarketCap(number) {
+    const string = number.toString();
+    if (string.length > 10) {
+      return `${parseFloat(string.slice(0, string.length - 8) / 100)}B`;
+    } else if (string.length > 7) {
+      return `${parseFloat(string.slice(0, string.length - 6) / 10)}M`;
+    } else {
+      return number;
+    }
+  }
+
   const CryptoCard = forwardRef((d, ref) => (
-    <div
-      ref={ref}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 5,
-      }}
-    >
+    <div ref={ref} className={styles.card}>
       <p
-        style={{
-          filter: favorites.includes(d.id) ? "none" : "grayscale(100%)",
-          cursor: "pointer",
-          opacity: favorites.includes(d.id) ? 1 : 0.5,
-          marginRight: 5,
-        }}
+        className={styles.text}
+        style={{ filter: !favorites.includes(d.id) ? "grayscale(100%)" : "" }}
         onClick={() => handleFavorite(d.id)}
       >
         ⭐
       </p>
-      <p
-        className={styles.text}
-        style={{
-          color: "white",
-          marginRight: 10,
-          display: "flex",
-          alignItems: "center",
-          whiteSpace: "nowrap",
-          fontWeight: 600,
-        }}
-      >
+      <p className={(styles.text, styles.currency)}>
         {d.id} - {currency.icon}
         {d.price > 10 ? parseFloat(d.price).toFixed(2) : d.price} (
         <p
@@ -134,22 +131,9 @@ export default function Home() {
         </p>
         )
       </p>
-      <p style={{ color: "white", fontWeight: 600 }}>
+      <p className={(styles.text, styles.currency)}>
         🧢 {currency.icon}
-        {d.market_cap.toString().length > 7
-          ? d.market_cap.toString().slice(0, d.market_cap.toString().length - 7)
-              .length > 3
-            ? `${parseFloat(
-                d.market_cap
-                  .toString()
-                  .slice(0, d.market_cap.toString().length - 8) / 100
-              )}B`
-            : `${parseFloat(
-                d.market_cap
-                  .toString()
-                  .slice(0, d.market_cap.toString().length - 6) / 10
-              )}M`
-          : d.market_cap}
+        {refactorMarketCap(d.market_cap)}
       </p>
     </div>
   ));
@@ -164,16 +148,14 @@ export default function Home() {
       <main className={styles.main}>
         <h1 className={styles.title}>
           🚀 <br />
-          <span style={{ display: "flex" }}>
+          <span>
             To the m
-            <span style={{ display: "flex", alignItems: "center" }}>
-              <p style={{ fontSize: 32, margin: 0, paddingTop: 20 }}>🌑</p>
+            <span style={{ alignItems: "center" }}>
+              <p className={styles.moon}>🌑</p>
               <p
+                className={styles.moon}
                 style={{
-                  fontSize: 32,
-                  margin: 0,
                   marginLeft: -5,
-                  paddingTop: 20,
                 }}
               >
                 🌑
@@ -182,79 +164,16 @@ export default function Home() {
             </span>
           </span>
         </h1>
-        <div
-          style={{
-            display: "flex",
-            width: 350,
-            justifyContent: "space-between",
-            margin: "20px 0",
-          }}
-        >
+        <div className={styles.currencies}>
+          {curriesList.map((c) => (
+            <Currency
+              selected={currency.display === c.display}
+              currency={c}
+              action={(currency) => setCurrency(currency)}
+            />
+          ))}
           <div
             style={{
-              color: "white",
-              cursor: "pointer",
-              padding: 5,
-              borderRadius: 5,
-              backgroundColor: currency.display === "USD" ? "#ffffff20" : "",
-            }}
-            onClick={() => setCurrency({ display: "USD", icon: "$" })}
-          >
-            $ USD
-          </div>
-          <div
-            style={{
-              color: "white",
-              cursor: "pointer",
-              padding: 5,
-              borderRadius: 5,
-              backgroundColor: currency.display === "GBP" ? "#ffffff20" : "",
-            }}
-            onClick={() => setCurrency({ display: "GBP", icon: "£" })}
-          >
-            £ GBP
-          </div>
-          <div
-            style={{
-              color: "white",
-              cursor: "pointer",
-              padding: 5,
-              borderRadius: 5,
-              backgroundColor: currency.display === "EUR" ? "#ffffff20" : "",
-            }}
-            onClick={() => setCurrency({ display: "EUR", icon: "€" })}
-          >
-            € EUR
-          </div>
-          <div
-            style={{
-              color: "white",
-              cursor: "pointer",
-              padding: 5,
-              borderRadius: 5,
-              backgroundColor: currency.display === "JPY" ? "#ffffff20" : "",
-            }}
-            onClick={() => setCurrency({ display: "JPY", icon: "¥" })}
-          >
-            ¥ JPY
-          </div>
-          <div
-            style={{
-              color: "white",
-              cursor: "pointer",
-              padding: 5,
-              borderRadius: 5,
-              backgroundColor: currency.display === "NOK" ? "#ffffff20" : "",
-            }}
-            onClick={() => setCurrency({ display: "NOK", icon: "kr " })}
-          >
-            kr NOK
-          </div>
-          <div
-            style={{
-              color: "white",
-              cursor: "pointer",
-              padding: 5,
               filter: showFavorites ? "none" : "grayscale(100%)",
             }}
             onClick={() => setShowFavorites(!showFavorites)}
@@ -265,9 +184,9 @@ export default function Home() {
 
         <div>
           <input
+            className={styles.search}
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            style={{ padding: 10, width: 300 }}
             placeholder="Search..."
             aria-label="Search"
           />
@@ -285,15 +204,17 @@ export default function Home() {
                   )
                   .reverse()
                   .map((d) => <CryptoCard key={`${d.id}`} {...d} />) ?? (
-                  <p>Oops, looks like there's nothing to show!</p>
+                  <p className={styles.error}>
+                    Oops, looks like there's nothing to show!
+                  </p>
                 )
               ) : (
-                <p style={{ color: "white", fontWeight: 600 }}>
+                <p className={styles.error}>
                   Oops, looks like there's nothing to show!
                 </p>
               )
             ) : (
-              <p style={{ color: "white", fontWeight: 600 }}>
+              <p className={styles.error}>
                 Oops, looks like there's nothing to show!
               </p>
             )}
@@ -309,3 +230,16 @@ export default function Home() {
     </div>
   );
 }
+
+const Currency = (props) => {
+  return (
+    <div
+      style={{
+        backgroundColor: props.selected ? "#ffffff20" : "",
+      }}
+      onClick={() => props.action(props.currency)}
+    >
+      {props.currency.icon} {props.currency.display}
+    </div>
+  );
+};
