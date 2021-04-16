@@ -130,7 +130,7 @@ export default function Home() {
           }}
         >
           {d["1d"].price_change_pct[0] !== "-" && "+"}
-          {d["1d"].price_change_pct}%
+          {(parseFloat(d["1d"].price_change_pct) * 100).toFixed(2)}%
         </p>
         )
       </p>
