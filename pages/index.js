@@ -147,11 +147,16 @@ export default function Home() {
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-8GK13HDZNJ"
         ></script>
-        <script>
-          window.dataLayer = window.dataLayer || []; function gtag()
-          {dataLayer.push(arguments)}
-          gtag('js', new Date()); gtag('config', 'G-8GK13HDZNJ');
-        </script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-8GK13HDZNJ'); 
+        `,
+          }}
+        />
       </Head>
 
       <main className={styles.main}>
