@@ -143,6 +143,15 @@ export default function Home() {
       <Head>
         <title>TTM</title>
         <link rel="icon" href="/favicon.ico" />
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-8GK13HDZNJ"
+        ></script>
+        <script>
+          window.dataLayer = window.dataLayer || []; function gtag()
+          {dataLayer.push(arguments)}
+          gtag('js', new Date()); gtag('config', 'G-8GK13HDZNJ');
+        </script>
       </Head>
 
       <main className={styles.main}>
