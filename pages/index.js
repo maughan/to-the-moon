@@ -7,6 +7,8 @@ import FlipMove from "react-flip-move";
 export default function Home() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
+  const isIos = window.navigator.userAgent.indexOf("Mac") != -1;
+
   const curriesList = [
     { display: "USD", icon: "$" },
     { display: "GBP", icon: "£" },
@@ -112,7 +114,11 @@ export default function Home() {
     <div ref={ref} className={styles.card}>
       <p
         className={styles.text}
-        style={{ filter: !favorites.includes(d.id) ? "grayscale(100%)" : "" }}
+        style={{
+          filter: !favorites.includes(d.id) ? "grayscale(100%)" : "",
+          marginRight: isIos ? 10 : 0,
+          fontSize: isIos ? 12 : 14,
+        }}
         onClick={() => handleFavorite(d.id)}
       >
         ⭐
@@ -132,7 +138,8 @@ export default function Home() {
         )
       </p>
       <p className={(styles.text, styles.currency)}>
-        🧢 {currency.icon}
+        <span style={{ marginRight: isIos ? 10 : 0 }}>🧢 </span>
+        {currency.icon}
         {refactorMarketCap(d.market_cap)}
       </p>
     </div>
@@ -162,21 +169,7 @@ export default function Home() {
       <main className={styles.main}>
         <h1 className={styles.title}>
           🚀 <br />
-          <span>
-            To the m
-            <span style={{ alignItems: "center" }}>
-              <p className={styles.moon}>🌑</p>
-              <p
-                className={styles.moon}
-                style={{
-                  marginLeft: -5,
-                }}
-              >
-                🌑
-              </p>
-              n
-            </span>
-          </span>
+          <span>to the moon</span>
         </h1>
         <div className={styles.currencies}>
           {curriesList.map((c) => (
@@ -189,6 +182,8 @@ export default function Home() {
           <div
             style={{
               filter: showFavorites ? "none" : "grayscale(100%)",
+              fontSize: 12,
+              marginTop: -2,
             }}
             onClick={() => setShowFavorites(!showFavorites)}
           >
