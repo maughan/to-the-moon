@@ -7,7 +7,8 @@ import FlipMove from "react-flip-move";
 export default function Home() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-  const isIos = window.navigator.userAgent.indexOf("Mac") != -1;
+  const isIos =
+    process.browser && window.navigator.userAgent.indexOf("Mac") != -1;
 
   const curriesList = [
     { display: "USD", icon: "$" },
