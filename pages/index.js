@@ -183,8 +183,8 @@ export default function Home() {
           <div
             style={{
               filter: showFavorites ? "none" : "grayscale(100%)",
-              fontSize: 12,
-              marginTop: -2,
+              fontSize: isIos ? 12 : 14,
+              marginTop: isIos ? -2 : 0,
             }}
             onClick={() => setShowFavorites(!showFavorites)}
           >
